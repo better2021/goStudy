@@ -1,11 +1,11 @@
-package main
+package randomNum
 import(
 	"fmt"
 	"math/rand"
 )
 
 // 生成随机数
-func main(){
+func random(){
 	num := rand.Int()
 	fmt.Println(num)
 }
