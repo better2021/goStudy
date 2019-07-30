@@ -34,7 +34,7 @@ func action2(c *gin.Context) {
 
 func homePage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Hello,let is go",
+		"message": "Hello,let is go", // 后面的逗号，是必须要带的
 	})
 }
 
@@ -45,7 +45,7 @@ func main() {
 	router.GET("/", homePage)
 
 	// RESTful 路由
-	router.GET("/getGin", hello)
+	router.GET("/getGin", hello) // 访问地址：http://127.0.0.1:8082/getGin
 	router.POST("/postGin", helloPost)
 
 	// 提取请求中的参数
