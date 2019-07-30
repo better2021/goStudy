@@ -1,12 +1,12 @@
 package randomNum
-import(
+
+import (
 	"fmt"
 	"math/rand"
 )
 
 // 生成随机数
-func random(){
+func random() {
 	num := rand.Int()
 	fmt.Println(num)
 }
-
