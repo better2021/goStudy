@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,15 @@ func hello(c *gin.Context) {
 
 // POST函数
 func helloPost(c *gin.Context) {
-	c.String(http.StatusOK, "gin Post")
+	fmt.Println(c.Request.Body, "---")
+	body := c.Request.Body
+	value, err := ioutil.ReadAll(body)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": string(value),
+	})
 }
 
 // 提取请求中的参数
