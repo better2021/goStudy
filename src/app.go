@@ -30,6 +30,14 @@ func main() { // 入口函数, 无参数无返回值
 	fmt.Println(calc.Add(b, c))
 }
 
+/*
+同一行声明多个变量和赋值
+例如： var a,b,c int = 1,2,3 或者a,b := 1,2
+全局变量的声明必须要var关键词，局部变量则可以省略
+也就是说 a,b := 1,2 只能用于函数的局部变量
+max,add以小写的字母开头的方法就为私有方法只能在本包中自己调用，不可导出给其他包调用
+*/
+
 func max(num1, num2 int) int {
 	var res int
 	if num1 > num2 {

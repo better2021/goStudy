@@ -1,13 +1,17 @@
 package calc
 
-import(
+import (
 	"fmt"
-) 
+)
 
-func Add(a,b int) int {
+func Add(a, b int) int {
 	return a + b
 }
 
-func init(){
+func Params(i int, j string) (int, string) {
+	return i, j
+}
+
+func init() {
 	fmt.Println("init")
 }

@@ -1,4 +1,4 @@
-package randomNum
+package test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 // 生成随机数
-func random() {
+func Random() {
 	num := rand.Int()
 	fmt.Println(num)
 }
