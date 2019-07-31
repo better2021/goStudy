@@ -74,13 +74,13 @@ func createUser(c *gin.Context) {
 
 // 更新接口
 func updateUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.PostForm("ID"), 10, 0)
+	id, err := strconv.ParseInt(c.PostForm("ID"), 10, 0) // strconv.ParseInt方法用于类型转换，ParseInt转换为整形
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(id, "---")
 	person := &Person{ID: id}
-	db.Model(person).Update("name", "yaozi")
+	db.Model(person).Updates(Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: 18, Address: c.PostForm("address")})
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"status":  http.StatusOK,
@@ -90,7 +90,12 @@ func updateUser(c *gin.Context) {
 
 // 删除接口
 func deleteUser(c *gin.Context) {
-	person := &Person{ID: 1}
+	id, err := strconv.ParseInt(c.PostForm("ID"), 10, 0)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(id, "---")
+	person := &Person{ID: id}
 	db.Delete(person)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
