@@ -12,9 +12,10 @@ import (
 
 var db *gorm.DB
 
+// 可以通过"omitempty"参数忽略掉值为空的键
 type Admin struct {
 	gorm.Model
-	ID      int64  `json:"id"`
+	ID      int64  `json:"id,omitempty"`
 	Name    string `json:"name"`
 	Address string `json:"adress"`
 }
@@ -37,8 +38,8 @@ func main() {
 	{
 		v1.GET("/list", adminList)
 		v1.POST("/create", adminCreate)
-		v1.PUT("/patch/:id", adminUpdate)
-		v1.DELETE("/delete/:id", adminDelete)
+		v1.PUT("/update", adminUpdate)
+		v1.DELETE("/delete/:ID", adminDelete)
 	}
 
 	router.Run("localhost:8088")
@@ -68,14 +69,14 @@ func adminCreate(c *gin.Context) {
 
 // 更新列表
 func adminUpdate(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	id, err := strconv.ParseInt(c.PostForm("id"), 10, 0)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println(id, "--")
 	admin := Admin{ID: id}
-	var opts = Admin{Name: c.PostForm("name"), Address: c.PostForm("address")}
+	var opts = Admin{ID: id, Name: c.PostForm("name"), Address: c.PostForm("address")}
 	db.Model(&admin).Update(opts)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
