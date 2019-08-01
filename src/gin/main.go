@@ -22,10 +22,10 @@ var db *gorm.DB
 
 type Person struct {
 	gorm.Model
-	Id      int64  `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
+	ID      uint64 `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
 	Name    string `json:"name"`
 	Email   string `gorm:"unique;not null" json:"email"` // 设置会员号（member number）唯一并且不为空
-	Age     int    `json:"age"`
+	Age     string `json:"age"`
 	Address string `json:"address"`
 }
 
@@ -62,9 +62,8 @@ func userList(c *gin.Context) {
 
 // 创建接口
 func createUser(c *gin.Context) {
-	person := &Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: 18, Address: c.PostForm("address")}
+	person := &Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: c.PostForm("age"), Address: c.PostForm("address")}
 	db.Create(person) // 创建一条数据
-	db.Save(person)   // 保存在数据库中
 	c.JSON(http.StatusOK, gin.H{
 		"message": "创建成功",
 		"status":  http.StatusOK,
@@ -74,14 +73,15 @@ func createUser(c *gin.Context) {
 
 // 更新接口
 func updateUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 0) // strconv.ParseInt方法用于类型转换，ParseInt转换为整形
+	id, err := strconv.ParseUint(c.Param("id"), 10, 0) // strconv.ParseInt方法用于类型转换，ParseInt转换为整形
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println(id, "---")
-	person := &Person{Id: id}
-	db.Model(person).Updates(Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: 18, Address: c.PostForm("address")})
+	person := &Person{ID: id}
+
+	db.Model(person).Updates(Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: c.PostForm("age"), Address: c.PostForm("address")})
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"status":  http.StatusOK,
@@ -91,13 +91,13 @@ func updateUser(c *gin.Context) {
 
 // 删除接口
 func deleteUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 0)
+	id, err := strconv.ParseUint(c.Param("id"), 10, 0)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println(id, "---")
-	person := &Person{Id: id}
+	person := &Person{ID: id}
 	db.Delete(person)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
