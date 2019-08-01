@@ -2,6 +2,7 @@ package main
 
 import (
 	"calc"
+	"fmt"
 	. "fmt" // 用.引入时可以省略前缀，用_引入只会执行包中的init()函数
 	"time"
 )
@@ -82,4 +83,15 @@ One:
 	Println(fruit[1])
 
 	Println(calc.Params(100, "多返回值"))
+
+	// go的并发，gorunting
+	for i := 0; i < 100; i++ {
+		//gorunting
+		go printHello(i)
+	}
+	time.Sleep(time.Second)
+}
+
+func printHello(i int) {
+	fmt.Println("Hello go 并发", i)
 }

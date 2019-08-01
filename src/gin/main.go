@@ -22,7 +22,7 @@ var db *gorm.DB
 
 type Person struct {
 	gorm.Model
-	ID      int64  `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
+	Id      int64  `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
 	Name    string `json:"name"`
 	Email   string `gorm:"unique;not null" json:"email"` // 设置会员号（member number）唯一并且不为空
 	Age     int    `json:"age"`
@@ -37,7 +37,7 @@ type Person struct {
 */
 func init() {
 	var err error
-	db, err = gorm.Open("mysql", "root:709463253@/test?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("mysql", "root:709463253@/test?charset=utf8&parseTime=True&loc=Local") // 连接数据库
 	if err != nil {
 		fmt.Println("数据库连接失败", err.Error())
 	} else {
@@ -50,13 +50,13 @@ func init() {
 /*RESTful 增删改查接口 start*/
 // 获取列表接口
 func userList(c *gin.Context) {
-	var person = make([]*Person, 0)
-	db.Find(&person)
-	fmt.Println(person)
+	var persons []Person
+	db.Find(&persons)
+	fmt.Println(persons)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "请求成功",
 		"status":  http.StatusOK,
-		"data":    person,
+		"data":    persons,
 	})
 }
 
@@ -74,12 +74,13 @@ func createUser(c *gin.Context) {
 
 // 更新接口
 func updateUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.PostForm("ID"), 10, 0) // strconv.ParseInt方法用于类型转换，ParseInt转换为整形
+	id, err := strconv.ParseInt(c.Param("id"), 10, 0) // strconv.ParseInt方法用于类型转换，ParseInt转换为整形
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Println(id, "---")
-	person := &Person{ID: id}
+	person := &Person{Id: id}
 	db.Model(person).Updates(Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: 18, Address: c.PostForm("address")})
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
@@ -90,17 +91,17 @@ func updateUser(c *gin.Context) {
 
 // 删除接口
 func deleteUser(c *gin.Context) {
-	id, err := strconv.ParseInt(c.PostForm("ID"), 10, 0)
+	id, err := strconv.ParseInt(c.Param("id"), 10, 0)
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Println(id, "---")
-	person := &Person{ID: id}
+	person := &Person{Id: id}
 	db.Delete(person)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
 		"status":  http.StatusOK,
-		"data":    person,
 	})
 }
 
