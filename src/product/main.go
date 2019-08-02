@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -45,15 +46,17 @@ func init() {
 
 func main() {
 	router := gin.Default()
+	router.Use(cors.Default()) // cors.Default() 默认允许所有源跨域
 
-	v1 := router.Group("/api/v1/product")
+	v1 := router.Group("/api/v1")
 	{
-		v1.GET("/", productList)
-		v1.POST("/", productCreate)
-		v1.PUT("/:id", productUpdate)
-		v1.DELETE("/:id", prodectDelete)
+		v1.GET("/product", productList)
+		v1.POST("/product", productCreate)
+		v1.PUT("/product/:id", productUpdate)
+		v1.DELETE("/product/:id", prodectDelete)
 	}
-	router.Run("localhost:8080")
+
+	router.Run("127.0.0.1:8080")
 }
 
 // 获取数据列表
@@ -69,7 +72,7 @@ func productList(c *gin.Context) {
 
 // 创建列表
 func productCreate(c *gin.Context) {
-	price := com.StrTo(c.PostForm("price")).MustInt()
+	price := com.StrTo(c.PostForm("price")).MustInt() // 把字符串型转换为整形 string => int
 	products := Product{Name: c.PostForm("name"), Price: price, Address: c.PostForm("address"), Desc: c.PostForm("desc")}
 	db.Create(&products)
 	c.JSON(http.StatusOK, gin.H{

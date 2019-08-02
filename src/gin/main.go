@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -111,12 +112,13 @@ func deleteUser(c *gin.Context) {
 func main() {
 	fmt.Println("hello gin")
 	router := gin.Default()
+	router.Use(cors.Default()) // cors.Default() 默认允许所有源跨域
 
 	/*RESTful 增删改查接口 start*/
 	v1 := router.Group("/api/v1/users")
 	{
-		v1.GET("/", userList)
-		v1.POST("/", createUser)
+		v1.GET("", userList)
+		v1.POST("", createUser)
 		v1.PUT("/:id", updateUser)
 		v1.DELETE("/:id", deleteUser)
 	}
