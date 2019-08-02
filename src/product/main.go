@@ -72,13 +72,24 @@ func productList(c *gin.Context) {
 
 // 创建列表
 func productCreate(c *gin.Context) {
-	price := com.StrTo(c.PostForm("price")).MustInt() // 把字符串型转换为整形 string => int
-	products := Product{Name: c.PostForm("name"), Price: price, Address: c.PostForm("address"), Desc: c.PostForm("desc")}
-	db.Create(&products)
+	// price := com.StrTo(c.PostForm("price")).MustInt() // 把字符串型转换为整形 string => int
+	//data, _ := ioutil.ReadAll(c.Request.Body)
+	//fmt.Println(string(data), "---")
+
+	// products := Product{
+	// 	Name:    c.PostForm("name"),
+	// 	Price:   price,
+	// 	Address: c.PostForm("address"),
+	// 	Desc:    c.PostForm("desc"),
+	// }
+
+	data := &Product{}
+	c.Bind(data) // c.Bind 可以获取json格式参数
+	db.Create(data)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "创建成功",
 		"status":  http.StatusOK,
-		"data":    products,
+		"data":    data,
 	})
 }
 
