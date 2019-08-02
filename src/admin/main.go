@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -12,12 +13,18 @@ import (
 
 var db *gorm.DB
 
-// 可以通过"omitempty"参数忽略掉值为空的键
+/*
+基本模型定义gorm.Model，包括字段ID，CreatedAt，UpdatedAt，DeletedAt，
+你可以将它嵌入你的模型，或者只写你想要的字段
+可以通过"omitempty"参数忽略掉值为空的键
+*/
+
 type Admin struct {
-	gorm.Model
-	ID      int64  `json:"id,omitempty"`
-	Name    string `json:"name"`
-	Address string `json:"adress"`
+	ID        int64     `json:"id,omitempty"`
+	Name      string    `json:"name"`
+	Address   string    `json:"adress"`
+	CreatedAt time.Time `json:"createAt"`
+	UpdatedAt time.Time `json:"updateAt"`
 }
 
 func init() {
@@ -38,8 +45,8 @@ func main() {
 	{
 		v1.GET("/list", adminList)
 		v1.POST("/create", adminCreate)
-		v1.PUT("/update", adminUpdate)
-		v1.DELETE("/delete/:ID", adminDelete)
+		v1.PUT("/update/:id", adminUpdate)
+		v1.DELETE("/delete/:id", adminDelete)
 	}
 
 	router.Run("localhost:8088")
@@ -69,19 +76,20 @@ func adminCreate(c *gin.Context) {
 
 // 更新列表
 func adminUpdate(c *gin.Context) {
-	id, err := strconv.ParseInt(c.PostForm("id"), 10, 0)
+	id, err := strconv.ParseInt(c.Param("id"), 10, 0)
 	if err != nil {
 		panic(err)
 	}
 
 	fmt.Println(id, "--")
-	admin := Admin{ID: id}
-	var opts = Admin{ID: id, Name: c.PostForm("name"), Address: c.PostForm("address")}
+	// opts 为要修改的元素
+	admin := Admin{ID: id} // 修改的条件，根据ID修改
+	var opts = Admin{Name: c.PostForm("name"), Address: c.PostForm("address")}
 	db.Model(&admin).Update(opts)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"status":  http.StatusOK,
-		"data":    admin,
+		"data":    opts,
 	})
 }
 
@@ -92,9 +100,9 @@ func adminDelete(c *gin.Context) {
 		panic(err)
 	}
 
+	// Where("id=?", id) 是删除的条件
 	fmt.Println(id, "--")
-	admin := Admin{ID: id}
-	db.Delete(&admin)
+	db.Where("id=?", id).Delete(Admin{})
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
 		"status":  http.StatusOK,

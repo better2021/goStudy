@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -21,12 +22,13 @@ var db *gorm.DB
 */
 
 type Person struct {
-	gorm.Model
-	ID      uint64 `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
-	Name    string `json:"name"`
-	Email   string `gorm:"unique;not null" json:"email"` // 设置会员号（member number）唯一并且不为空
-	Age     string `json:"age"`
-	Address string `json:"address"`
+	ID        uint64    `gorm:"primary_key;AUTO_INCREMENT" json:"id"` // 字段`ID`为默认主键
+	Name      string    `json:"name"`
+	Email     string    `gorm:"unique;not null" json:"email"` // 设置会员号（member number）唯一并且不为空
+	Age       string    `json:"age"`
+	Address   string    `json:"address"`
+	CreatedAt time.Time `json:"createAt"`
+	UpdatedAt time.Time `json:"updateAt"`
 }
 
 /*
@@ -79,13 +81,13 @@ func updateUser(c *gin.Context) {
 	}
 
 	fmt.Println(id, "---")
-	person := &Person{ID: id}
 
-	db.Model(person).Updates(Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: c.PostForm("age"), Address: c.PostForm("address")})
+	var opts = Person{Name: c.PostForm("name"), Email: c.PostForm("email"), Age: c.PostForm("age"), Address: c.PostForm("address")}
+	db.Model(&Person{ID: id}).Updates(opts)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"status":  http.StatusOK,
-		"data":    person,
+		"data":    opts,
 	})
 }
 
@@ -97,8 +99,7 @@ func deleteUser(c *gin.Context) {
 	}
 
 	fmt.Println(id, "---")
-	person := &Person{ID: id}
-	db.Delete(person)
+	db.Where("id=?", id).Delete(Person{})
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
 		"status":  http.StatusOK,
