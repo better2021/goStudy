@@ -45,8 +45,12 @@ func init() {
 }
 
 func main() {
+	/*
+		cors.Default() 默认允许所有源跨域
+		跨域要写在路由前面，需要先执行
+	*/
 	router := gin.Default()
-	router.Use(cors.Default()) // cors.Default() 默认允许所有源跨域
+	router.Use(cors.Default())
 
 	v1 := router.Group("/api/v1")
 	{
@@ -72,19 +76,17 @@ func productList(c *gin.Context) {
 
 // 创建列表
 func productCreate(c *gin.Context) {
-	// price := com.StrTo(c.PostForm("price")).MustInt() // 把字符串型转换为整形 string => int
-	//data, _ := ioutil.ReadAll(c.Request.Body)
-	//fmt.Println(string(data), "---")
-
-	// products := Product{
-	// 	Name:    c.PostForm("name"),
-	// 	Price:   price,
-	// 	Address: c.PostForm("address"),
-	// 	Desc:    c.PostForm("desc"),
-	// }
-
+	/*
+	 gin还提供了更加高级方法，c.Bind，
+	 它会更加content-type自动推断是bind表单还是json的参数
+	 json格式application/json或者表单格式x-www-form-urlencoded
+	*/
 	data := &Product{}
-	c.Bind(data) // c.Bind 可以获取json格式参数
+	err := c.Bind(data) // c.Bind 可以获取json格式参数
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	db.Create(data)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "创建成功",
@@ -96,22 +98,21 @@ func productCreate(c *gin.Context) {
 // 更新列表
 func productUpdate(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
-	price := com.StrTo(c.PostForm("price")).MustInt()
 	fmt.Println(id, "---")
 
 	product := Product{ID: id} // 修改条件，根据ID修改
 	// 需要更新的元素
-	var opts = Product{
-		Name:    c.PostForm("name"),
-		Address: c.PostForm("address"),
-		Price:   price,
-		Desc:    c.PostForm("desc"),
+	data := &Product{}
+	err := c.Bind(data) // c.Bind 可以获取json格式参数
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	db.Model(&product).Update(opts)
+	db.Model(&product).Update(data)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "更新成功",
 		"status":  http.StatusOK,
-		"data":    opts,
+		"data":    data,
 	})
 }
 
@@ -124,6 +125,6 @@ func prodectDelete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "删除成功",
 		"status":  http.StatusOK,
-		"data":    `"删除id为：" id`,
+		"data":    id,
 	})
 }
