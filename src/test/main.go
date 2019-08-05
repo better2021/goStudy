@@ -5,6 +5,26 @@ import (
 	"math/rand"
 )
 
+type Books struct {
+	title   string
+	author  string
+	subject string
+	book_id int
+}
+
+type person struct {
+	Name    string
+	Age     int
+	Contact struct {
+		Phone, City string
+	}
+}
+
+type aaa struct {
+	string
+	int
+}
+
 func main() {
 	random()
 	arr := [5]string{"马龙", "迈克尔乔丹", "雷吉米勒", "蒂姆邓肯", "科比布莱恩特"}
@@ -35,12 +55,7 @@ func main() {
 		type 语句设定了结构体的名称
 		忽略的字段为 0 或 空
 	*/
-	type Books struct {
-		title   string
-		author  string
-		subject string
-		book_id int
-	}
+
 	// 创建一个新的结构体
 	fmt.Println(Books{"go语言", "dva", "教程", 15})
 	// 也可以使用key => value 格式
@@ -53,7 +68,57 @@ func main() {
 	// book.author = "dva"
 	// book.subject = "教程a"
 	// book.book_id = 10
-	fmt.Println(book, book.subject, "--")
+	// fmt.Println(book, book.subject, "--")
+
+	a := Books{}
+	a.title = "asd"
+	a.author = "哈哈"
+	A(&book)
+	fmt.Println(a)
+
+	per := person{Name: "joe", Age: 18}
+	per.Contact.Phone = "1326854218"
+	per.Contact.City = " 深圳"
+	fmt.Println(per)
+
+	// bb := aaa{"丫丫", 20}
+	// fmt.Println(bb, "---")
+
+	/*
+		arr[startIndex,endIndex,maxLeng]
+		startIndex 开始索引
+		endIndex 结束索引
+		maxLeng 最大容量
+	*/
+	ar := [6]int{0, 1, 2, 3, 4, 5}
+	fmt.Println(ar[2:], "---")
+
+	s1 := make([]int, 8, 10) // 8 表示数组的长度为8；最大容量为10个
+	s2 := []string{"a", "b", "c", "d", "e", "f"}
+	cc := s2[2:5]
+	s3 := append(s2, "adc")
+	fmt.Println(s1, cc, len(cc), cap(cc)) // len(cc) 为切片的长度，cap(cc) 为切片的容量值
+	fmt.Println(s3)
+
+	/*
+		map类型主要由key - value组成
+		map[int]string
+		int 为 key
+		string 为value
+	*/
+	var m map[int]string // 声明一个map类型
+	m = map[int]string{}
+	m[1] = "ok"
+	// delete(m, 1) //  删除map
+	fmt.Println(m)
+
+	m1 := map[string]int{"a": 1, "b": 2}
+	fmt.Println(m1)
+}
+
+func A(book *Books) {
+	book.title = "golang"
+	fmt.Println("A", book)
 }
 
 // 生成随机数
