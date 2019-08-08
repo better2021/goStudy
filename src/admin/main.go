@@ -51,7 +51,7 @@ func main() {
 		v1.DELETE("/delete/:id", adminDelete)
 	}
 
-	router.Run("localhost:8088")
+	router.Run("localhost:8083")
 }
 
 // 获取数据列表
