@@ -24,10 +24,30 @@ func Variable(){
 	}
 	cc() // 执行匿名函数
 
-	ff := clo(10)
-	fmt.Println(ff(5))
+	//ff := clo(10)
+	//fmt.Println(ff(5))
 
 	//def()
+
+	tt := &test{Address:"深圳"}
+	tt.Name = "feiyu"
+	tt.Age = 18
+	tt.Contact.Phone = "13246586235"
+	tt.Contact.City = "wuhan"
+	tt.human.Sex = "girl"
+	fmt.Println(tt)
+	AA(tt)
+	fmt.Println(tt)
+
+	// 匿名结构体
+	qq := struct {
+		Name string
+		Age int
+	}{
+		Name:"coco",
+		Age:20,
+	}
+	fmt.Println(qq)
 }
 
 // ...int 可以传入多个int参数
@@ -46,4 +66,26 @@ func def()  {
 	for i:=0;i<5 ;i++  {
 		defer fmt.Println(i) // defer 新定义的后执行，后定义的先执行，后来居上
 	}
+}
+
+/*
+结构体
+*/
+type human struct {
+	Sex string
+}
+
+type test struct {
+	human
+	Name string
+	Age int
+	Address string
+	Contact struct{
+		Phone, City string
+	}
+}
+
+func AA(per *test){
+	per.Age = 24
+	fmt.Println(per,"--")
 }
