@@ -9,7 +9,7 @@ import (
 环境变量 GOPATH的配置很重要
 GOPATH 下的src是存放项目源文件的
 go env 命令可查看GOPATH的路径
-例如：GOPATH=C:\Users\feiyu\go;E:\study\beego-gin;
+例如：GOPATH=C:\Users\feiyu\go;E:\lesson\beego-gin;
 GOPATH  可以写多路劲用分号隔开；
 C:\Users\feiyu\go 下面有有个文件bin，pkg，src
 bin：用于存放.exe可执行文件
