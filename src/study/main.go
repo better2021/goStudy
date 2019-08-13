@@ -93,7 +93,9 @@ func main()  {
 	//root.right = &treeNode{5,nil,nil}
 	//fmt.Println(root)
 
-	lesson.Variable()
+	// lesson.Variable()
+	//lesson.Lesson()
+	lesson.Run()
 
 }
 
