@@ -5,6 +5,7 @@ import (
 	"github.com/skip2/go-qrcode"
 	"image/color"
 	"log"
+	"time"
 )
 
 // 定义一个结构体类型
@@ -54,6 +55,39 @@ func Run(){
 		qr.ForegroundColor = color.Black
 		qr.WriteFile(256,"./qrcode.png")
 	}
+
+	fmt.Println(0.1 + 0.2,0.1*0.2) // go 的浮点型计算不会像js那样丢失精度
+
+	var datStr string
+	day := time.Now().Weekday()
+	switch day {
+		case 0:
+		datStr = "星期天"
+		case 1:
+			datStr = "星期一"
+		case 2:
+			datStr = "星期二"
+		case 3:
+			datStr = "星期三"
+		case 4:
+			datStr = "星期四"
+		case 5:
+			datStr = "星期五"
+		case 6:
+			datStr = "星期六"
+	}
+	fmt.Println(day,datStr,"--")
+
+	for index := 10;index>0;index--{
+		if index == 5{
+			break
+		}
+		fmt.Println(index)
+	}
+
+	fag(1,3,6)
+ 	res := isEvent(6)
+ 	fmt.Println(res,"--")
 }
 
 func test01(s Student){
@@ -67,4 +101,15 @@ func foo(a,b int)(int,int){
 	return  a,b
 }
 
+func fag(arg ...int){
+	for  _,n:=range arg {
+		fmt.Println(n,"+-")
+	}
+}
 
+func isEvent(arg int) bool{
+	if arg%2==0{
+		return true
+	}
+	return false
+}

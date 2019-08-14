@@ -95,7 +95,8 @@ func main()  {
 
 	// lesson.Variable()
 	//lesson.Lesson()
-	lesson.Run()
+	// lesson.Run()
+	lesson.Four()
 
 }
 
