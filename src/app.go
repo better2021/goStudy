@@ -1,8 +1,8 @@
 package main // 声明文件的package
 // 通过import 关键字导入其他非main包
 import (
-	"calc"
 	"fmt"
+	"github.com/feiyuWeb/beego-gin/src/calc"
 )
 
 /*
