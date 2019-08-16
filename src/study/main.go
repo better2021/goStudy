@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-func main()  {
+func main() {
 	//variable()
 	//a,b := 3,4
 	//a,b = swap(a,b)
@@ -44,9 +44,9 @@ func main()  {
 	//println(numbers)
 
 	/*
-	Map 是一种无序的键值对的集合
-	map[string]string
-	[string]表示key的类型，string表示value的类型
+		Map 是一种无序的键值对的集合
+		map[string]string
+		[string]表示key的类型，string表示value的类型
 	*/
 	//m := map[string]string{
 	//	"name":"go",
@@ -80,7 +80,7 @@ func main()  {
 	//}
 
 	/*
-	结构体
+		结构体
 	*/
 	//type treeNode struct {
 	//	value int
@@ -94,9 +94,11 @@ func main()  {
 	//fmt.Println(root)
 
 	// lesson.Variable()
-	//lesson.Lesson()
+	// lesson.Lesson()
 	// lesson.Run()
-	lesson.Four()
+	// lesson.Four()
+	//lesson.Ostest()
+	lesson.Str()
 
 }
 

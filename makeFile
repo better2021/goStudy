@@ -1,2 +1,0 @@
-app:
-		go run app.go
