@@ -97,8 +97,9 @@ func main() {
 	// lesson.Lesson()
 	// lesson.Run()
 	// lesson.Four()
-	//lesson.Ostest()
-	lesson.Str()
+	// lesson.Ostest()
+	// lesson.Str()
+	lesson.Fn()
 
 }
 
