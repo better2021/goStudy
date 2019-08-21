@@ -99,7 +99,8 @@ func main() {
 	// lesson.Four()
 	// lesson.Ostest()
 	// lesson.Str()
-	lesson.Fn()
+	// lesson.Fn()
+	lesson.DeferHandle()
 
 }
 
