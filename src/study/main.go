@@ -100,7 +100,8 @@ func main() {
 	// lesson.Ostest()
 	// lesson.Str()
 	// lesson.Fn()
-	lesson.DeferHandle()
+	// lesson.DeferHandle()
+	lesson.Goroutine()
 
 }
 

@@ -1,2 +1,0 @@
-# github.com/feiyuWeb/beego-gin/src/study/lesson
-lesson\study08.go:65:21: invalid operation: number + rValue (mismatched types int64 and reflect.Value)
