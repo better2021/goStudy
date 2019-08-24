@@ -35,6 +35,12 @@ func Goroutine()  {
 	// 查找符合正则的全部
 	two := re.FindAll([]byte(a),-1)
 	fmt.Println("Find:",two)
+
+	str2 := "hello"
+	data2 := []byte(str2)
+	fmt.Println(data2)
+	str3 := string(data2)
+	fmt.Println(str3)
 }
 
 
